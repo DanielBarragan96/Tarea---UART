@@ -59,30 +59,30 @@ void UART0_interruptEnable(UART_ChannelType uartChannel){
 			break;
 		}
 		case UART_1:{
-				UART1->C2 |= (UART_C2_TIE_MASK);
-				NVIC_enableInterruptAndPriotity(UART1_IRQ, PRIORITY_3);
-				break;
-			}
+			UART1->C2 |= (UART_C2_TIE_MASK);
+			NVIC_enableInterruptAndPriotity(UART1_IRQ, PRIORITY_3);
+			break;
+		}
 		case UART_2:{
-				UART2->C2 |= (UART_C2_TIE_MASK);
-				NVIC_enableInterruptAndPriotity(UART2_IRQ, PRIORITY_3);
-				break;
-			}
+			UART2->C2 |= (UART_C2_TIE_MASK);
+			NVIC_enableInterruptAndPriotity(UART2_IRQ, PRIORITY_3);
+			break;
+		}
 		case UART_3:{
-				UART3->C2 |= (UART_C2_TIE_MASK);
-				NVIC_enableInterruptAndPriotity(UART3_IRQ, PRIORITY_3);
-				break;
-			}
+			UART3->C2 |= (UART_C2_TIE_MASK);
+			NVIC_enableInterruptAndPriotity(UART3_IRQ, PRIORITY_3);
+			break;
+		}
 		case UART_4:{
-				UART4->C2 |= (UART_C2_TIE_MASK);
-				NVIC_enableInterruptAndPriotity(UART4_IRQ, PRIORITY_3);
-				break;
-			}
+			UART4->C2 |= (UART_C2_TIE_MASK);
+			NVIC_enableInterruptAndPriotity(UART4_IRQ, PRIORITY_3);
+			break;
+		}
 		case UART_5:{
-				UART5->C2 |= (UART_C2_TIE_MASK);
-				NVIC_enableInterruptAndPriotity(UART5_IRQ, PRIORITY_3);
-				break;
-			}
+			UART5->C2 |= (UART_C2_TIE_MASK);
+			NVIC_enableInterruptAndPriotity(UART5_IRQ, PRIORITY_3);
+			break;
+		}
 		default: return;
 	}
 	EnableInterrupts;
