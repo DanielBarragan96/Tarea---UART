@@ -11,6 +11,7 @@
 #include "MK64F12.h" /* include peripheral declarations */
 #include "UART.h"/**UART device driver*/
 #include "NVIC.h"/**NVIC device driver*/
+#include "GPIO.h"
 
 #define DEBUG
 
@@ -25,6 +26,7 @@ int main(void)
 	/**Enables the clock of PortB in order to configures TX and RX of UART peripheral*/
 	SIM->SCGC5 = SIM_SCGC5_PORTB_MASK;
 	/**Configures the pin control register of pin16 in PortB as UART RX*/
+	//GPIO_pinControlRegister(PORTB, BIT16, UART_value);
 	PORTB_PCR(16) = PORT_PCR_MUX(3);
 	/**Configures the pin control register of pin16 in PortB as UART TX*/
 	PORTB_PCR(17) = PORT_PCR_MUX(3);

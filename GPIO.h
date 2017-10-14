@@ -100,11 +100,23 @@ typedef enum{GPIO_A, /*!< Definition to select GPIO A */
 /*! This data type is used to configure the pin control register*/
 typedef const uint32 GPIO_pinControlRegisterType;
 
-
-
-
-
+/********************************************************************************************/
+/********************************************************************************************/
+/********************************************************************************************/
+/*!
+ 	 \brief	 This function clears the interruption flag of a port.
+ 	 \param[in]  gpio Port to clear interrupt flag.
+ 	 \return 1 if there were no mistakes.
+ */
 uint8 GPIO_clearIRQStatus(GPIO_portNameType gpio);
+/********************************************************************************************/
+/********************************************************************************************/
+/********************************************************************************************/
+/*!
+ 	 \brief	 This function clears all interrupts that were sensed by the GPIO.
+ 	 \param[in]  portName Port to get status of interruption flag.
+ 	 \return the interruption flag of the port gpio.
+ */
 uint8 GPIO_getIRQStatus(GPIO_portNameType gpio);
 
 
