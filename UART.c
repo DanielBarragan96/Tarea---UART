@@ -5,7 +5,10 @@
 UART_MailBoxType UART0_MailBox = {0,0};
 
 void UART0_Status_IRQHandler(void){
-
+	if(0 == (UART0->C2 & UART_C2_RIE_MASK)){//Check RIE (Receiver Full Interrupt) end transmission
+		UART0_MailBox.mailBox = UART0->D; //set the MailBox value
+		UART0_MailBox.flag = 1;//activates the MailBox falg
+	}
 }
 
 void UART_init(UART_ChannelType uartChannel, uint32 systemClk, UART_BaudRateType baudRate){
