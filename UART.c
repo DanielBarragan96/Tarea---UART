@@ -1,7 +1,8 @@
 #include "MK64F12.h"
+#include "NVIC.h"
 #include "UART.h"
 
-uint8 UART0_MailBox = 0;
+UART_MailBoxType UART0_MailBox = {0,0};
 
 void UART0_Status_IRQHandler(void){
 
@@ -48,7 +49,40 @@ void UART_init(UART_ChannelType uartChannel, uint32 systemClk, UART_BaudRateType
 }
 
 void UART0_interruptEnable(UART_ChannelType uartChannel){
-
+	switch(uartChannel){
+		case UART_0:{
+			UART0->C2 |= (UART_C2_TIE_MASK);
+			NVIC_enableInterruptAndPriotity(UART0_IRQ, PRIORITY_3);
+			break;
+		}
+		case UART_1:{
+				UART1->C2 |= (UART_C2_TIE_MASK);
+				NVIC_enableInterruptAndPriotity(UART1_IRQ, PRIORITY_3);
+				break;
+			}
+		case UART_2:{
+				UART2->C2 |= (UART_C2_TIE_MASK);
+				NVIC_enableInterruptAndPriotity(UART2_IRQ, PRIORITY_3);
+				break;
+			}
+		case UART_3:{
+				UART3->C2 |= (UART_C2_TIE_MASK);
+				NVIC_enableInterruptAndPriotity(UART3_IRQ, PRIORITY_3);
+				break;
+			}
+		case UART_4:{
+				UART4->C2 |= (UART_C2_TIE_MASK);
+				NVIC_enableInterruptAndPriotity(UART4_IRQ, PRIORITY_3);
+				break;
+			}
+		case UART_5:{
+				UART5->C2 |= (UART_C2_TIE_MASK);
+				NVIC_enableInterruptAndPriotity(UART5_IRQ, PRIORITY_3);
+				break;
+			}
+		default: return;
+	}
+	EnableInterrupts;
 }
 
 void UART_putChar (UART_ChannelType uartChannel, uint8 character){
