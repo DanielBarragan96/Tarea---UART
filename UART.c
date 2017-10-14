@@ -26,7 +26,7 @@ void UART_init(UART_ChannelType uartChannel, uint32 systemClk, UART_BaudRateType
 				UART0->BDH =   (UART_BDH_SBR_MASK & ((uint16) UART_baud_rate[12:8] << 8));
 				UART0->BDL = (uint8) UART_baud_rate;
 
-				UART0->C4 ; //Copy brfa to UART0_C4[4:0]
+				UART0->C4 = brfa; //Copy brfa to UART0_C4[4:0]
 
 				UART0->C2 &= (UART_C2_TIE_MASK); //Enable transmission and receptor of the UART
 			break;
