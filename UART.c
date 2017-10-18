@@ -1,49 +1,14 @@
-#include "MK64F12.h"
+#include "DataTypeDefinitions.h"
 #include "UART.h"
+#include "MK64F12.h"
 
-uint8 UART0_MailBox = 0;
+
 
 void UART0_Status_IRQHandler(void){
 
 }
 
 void UART_init(UART_ChannelType uartChannel, uint32 systemClk, UART_BaudRateType baudRate){
-	switch(uartChannel){
-		case UART_0:{
-				SIM->SCGC4 |= UART0_BASE; //Activate UART0 Clock gating
-				UART0->C2 &= ~(UART_C2_TIE_MASK); //Disable transmission and receptor of the UART
-
-				uint16 brfa;
-				uint16 BRFD = brfa/32;
-
-				ufloat32 UART_baud_rate = (ufloat32) (systemClk/(16 * (1 + BRFD)));
-				//ufloat32 UART_baud_rate = systemClk / (16 × (SBR[12:0] + BRFD));
-
-				UART0->BDH =   (UART_BDH_SBR_MASK & ((uint16) UART_baud_rate[12:8] << 8));
-				UART0->BDL = (uint8) UART_baud_rate;
-
-				UART0->C4 ; //Copy brfa to UART0_C4[4:0]
-
-				UART0->C2 &= (UART_C2_TIE_MASK); //Enable transmission and receptor of the UART
-			break;
-		}
-		case UART_1:{
-
-		}
-		case UART_2:{
-
-		}
-		case UART_3:{
-
-		}
-		case UART_4:{
-
-		}
-		case UART_5:{
-
-		}
-		default: return;
-	}
 
 }
 
@@ -51,10 +16,117 @@ void UART0_interruptEnable(UART_ChannelType uartChannel){
 
 }
 
-void UART_putChar (UART_ChannelType uartChannel, uint8 character){
-
+void UART_putChar (UART_ChannelType uartChannel, uint8 character)
+{
+	switch(uartChannel)
+	{
+	case UART_0:
+		while(!(UART0->S1 & UART_S1_RDRF_MASK))
+			{
+				UART0->D = character;
+			}
+		break;
+	case UART_1:
+		while(!(UART1->S1 & UART_S1_RDRF_MASK))
+			{
+				UART1->D = character;
+			}
+		break;
+	case UART_2:
+		while(!(UART2->S1 & UART_S1_RDRF_MASK))
+			{
+				UART2->D = character;
+			}
+		break;
+	case UART_3:
+		while(!(UART3->S1 & UART_S1_RDRF_MASK))
+			{
+				UART3->D = character;
+			}
+		break;
+	case UART_4:
+		while(!(UART4->S1 & UART_S1_RDRF_MASK))
+			{
+				UART4->D = character;
+			}
+		break;
+	case UART_5:
+		while(!(UART5->S1 & UART_S1_RDRF_MASK))
+			{
+				UART5->D = character;
+			}
+		break;
+	default:
+		return;
+	}
 }
 
-void UART_putString(UART_ChannelType uartChannel, sint8* string){
-
+void UART_putString(UART_ChannelType uartChannel, sint8* string)
+{
+	uint16 end_word = 0;
+	switch(uartChannel)
+	{
+	case UART_0:
+		while(!(UART0->S1 & UART_S1_RDRF_MASK))
+			{
+				while(NULL != string[end_word])
+				{
+					UART0->D = string[end_word];
+					end_word++;
+				}
+			}
+		break;
+	case UART_1:
+		while(!(UART1->S1 & UART_S1_RDRF_MASK))
+			{
+				while(NULL != string[end_word])
+				{
+					UART1->D = string[end_word];
+					end_word++;
+				}
+			}
+		break;
+	case UART_2:
+		while(!(UART2->S1 & UART_S1_RDRF_MASK))
+			{
+				while(NULL != string[end_word])
+				{
+					UART2->D = string[end_word];
+					end_word++;
+				}
+			}
+		break;
+	case UART_3:
+		while(!(UART3->S1 & UART_S1_RDRF_MASK))
+			{
+				while(NULL != string[end_word])
+				{
+					UART3->D = string[end_word];
+					end_word++;
+				}
+			}
+		break;
+	case UART_4:
+		while(!(UART4->S1 & UART_S1_RDRF_MASK))
+			{
+				while(NULL != string[end_word])
+				{
+					UART4->D = string[end_word];
+					end_word++;
+				}
+			}
+		break;
+	case UART_5:
+		while(!(UART5->S1 & UART_S1_RDRF_MASK))
+			{
+				while(NULL != string[end_word])
+				{
+					UART5->D = string[end_word];
+					end_word++;
+				}
+			}
+		break;
+	default:
+		return;
+	}
 }
