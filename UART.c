@@ -168,15 +168,15 @@ void UART0_interruptEnable(UART_ChannelType uartChannel){
 	EnableInterrupts;
 }
 
-
+//checks if you already transmited before you transmit something else
 void UART_putChar (UART_ChannelType uartChannel, uint8 character)
 {
 	switch(uartChannel)
 	{
 	case UART_0:
-		while(!(UART0->S1 & UART_S1_RDRF_MASK))
+		while(!(UART0->S1 & UART_S1_RDRF_MASK)) //checks the Receive data register full flag bit on the UART Status register 1
 			{
-				UART0->D = character;
+				UART0->D = character; //writes the character on the Data register of the UART
 			}
 		break;
 	case UART_1:
@@ -214,13 +214,14 @@ void UART_putChar (UART_ChannelType uartChannel, uint8 character)
 	}
 }
 
+//writes a string by writing character by character until the string ends
 void UART_putString(UART_ChannelType uartChannel, sint8* string)
 {
 	switch(uartChannel)
 	{
 	case UART_0:
-		while(*string)
-			UART_putChar(UART_0, *string++);
+		while(*string)  //checks while the string hasn't finished
+			UART_putChar(UART_0, *string++);    //calls putChar to write the whole string while it moves character by character
 		break;
 	case UART_1:
 		while(*string)
