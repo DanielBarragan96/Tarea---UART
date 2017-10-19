@@ -15,115 +15,123 @@ void UART0_Status_IRQHandler(void){
 void UART_init(UART_ChannelType uartChannel, uint32 systemClk, UART_BaudRateType baudRate){
 	switch(uartChannel){
 		case UART_0:{
-				SIM->SCGC4 |= UART0_BASE; //Activate UART0 Clock gating
-				UART0->C2 &= ~(UART_C2_TIE_MASK); //Disable transmission and receptor of the UART
-
-				uint16 BRFD = 0;//BRF starts with 0
-				uint16 brfa = BRFD*32;
-
-				uint16 SBR = ((systemClk/baudRate)-BRFD)/16;
-
-				UART0->BDH =   (UART_BDH_SBR_MASK & ((uint16) SBR >> 8));
+				SIM->SCGC4 |= SIM_SCGC4_UART0_MASK; //Activate UART0 Clock gating
+				UART0->C2 &= (~UART_C2_TE_MASK & ~UART_C2_RE_MASK); //Disable transmission and receptor of the UART
+				
+				uint16 brfa = (systemClk)/(baudRate);
+				uint16 SBR = (systemClk)/(16*baudRate);
+				
+				//First we clean the UART high and low baudrate values, then we assign the wanted baudRate value
+				UART0->BDH &= ~UART_BDH_SBR_MASK;
+				UART0->BDL &= ~UART_BDL_SBR_MASK;
+				UART0->BDH =   ((UART_BDH_SBR_MASK & (uint16) SBR) >> 8);
 				UART0->BDL = (UART_BDL_SBR_MASK & ((uint8) SBR));
 
-				UART0->C4 = (UART_C4_BRFA_MASK & brfa); //Copy brfa to UART0_C4[4:0]
+				//First we clean the BaudRate fine adjust value
+				UART0->C4 &= ~UART_C4_BRFA_MASK;
+				UART0->C4 = (UART_C4_BRFA_MASK | brfa); //Copy brfa to UART0_C4[4:0]
 
-				UART0->C2 &= (UART_C2_TIE_MASK); //Enable transmission and receptor of the UART
+				UART0->C2 |= (UART_C2_TE_MASK |UART_C2_RE_MASK); //Enable transmission and receptor of the UART
 			break;
 		}
 		case UART_1:{
-			SIM->SCGC4 |= UART1_BASE; //Activate UART0 Clock gating
-			UART1->C2 &= ~(UART_C2_TIE_MASK); //Disable transmission and receptor of the UART
+			SIM->SCGC4 |= SIM_SCGC4_UART1_MASK; //Activate UART0 Clock gating
+			UART1->C2 &= (~UART_C2_TE_MASK & ~UART_C2_RE_MASK); //Disable transmission and receptor of the UART
 
-			uint16 BRFD = 0;//BRF starts with 0
-			uint16 brfa = BRFD*32;
+			uint16 brfa = (systemClk)/(baudRate);
+			uint16 SBR = (systemClk)/(16*baudRate);
 
-			//ufloat32 UART_baud_rate = (ufloat32) (systemClk/(16 * (1 + BRFD)));
-			//ufloat32 UART_baud_rate = systemClk / (16 × (SBR[12:0] + BRFD));
-			uint16 SBR = ((systemClk/baudRate)-BRFD)/16;
-
-			UART1->BDH =   (UART_BDH_SBR_MASK & ((uint16) SBR >> 8));
+			//First we clean the UART high and low baudrate values, then we assign the wanted baudRate value
+			UART1->BDH &= ~UART_BDH_SBR_MASK;
+			UART1->BDL &= ~UART_BDL_SBR_MASK;
+			UART1->BDH =   ((UART_BDH_SBR_MASK & (uint16) SBR) >> 8);
 			UART1->BDL = (UART_BDL_SBR_MASK & ((uint8) SBR));
 
-			UART1->C4 = (UART_C4_BRFA_MASK & brfa); //Copy brfa to UART0_C4[4:0]
+			//First we clean the BaudRate fine adjust value
+			UART1->C4 &= ~UART_C4_BRFA_MASK;
+			UART1->C4 = (UART_C4_BRFA_MASK | brfa); //Copy brfa to UART0_C4[4:0]
 
-			UART1->C2 &= (UART_C2_TIE_MASK); //Enable transmission and receptor of the UART
+			UART1->C2 |= (UART_C2_TE_MASK |UART_C2_RE_MASK); //Enable transmission and receptor of the UART
 		break;
 		}
 		case UART_2:{
-			SIM->SCGC4 |= UART2_BASE; //Activate UART0 Clock gating
-			UART2->C2 &= ~(UART_C2_TIE_MASK); //Disable transmission and receptor of the UART
+			SIM->SCGC4 |= SIM_SCGC4_UART2_MASK; //Activate UART0 Clock gating
+			UART2->C2 &= (~UART_C2_TE_MASK & ~UART_C2_RE_MASK); //Disable transmission and receptor of the UART
 
-			uint16 BRFD = 0;//BRF starts with 0
-			uint16 brfa = BRFD*32;
+			uint16 brfa = (systemClk)/(baudRate);
+			uint16 SBR = (systemClk)/(16*baudRate);
 
-			//ufloat32 UART_baud_rate = (ufloat32) (systemClk/(16 * (1 + BRFD)));
-			//ufloat32 UART_baud_rate = systemClk / (16 × (SBR[12:0] + BRFD));
-			uint16 SBR = ((systemClk/baudRate)-BRFD)/16;
-
-			UART2->BDH =   (UART_BDH_SBR_MASK & ((uint16) SBR >> 8));
+			//First we clean the UART high and low baudrate values, then we assign the wanted baudRate value
+			UART2->BDH &= ~UART_BDH_SBR_MASK;
+			UART2->BDL &= ~UART_BDL_SBR_MASK;
+			UART2->BDH =   ((UART_BDH_SBR_MASK & (uint16) SBR) >> 8);
 			UART2->BDL = (UART_BDL_SBR_MASK & ((uint8) SBR));
 
-			UART2->C4 = (UART_C4_BRFA_MASK & brfa); //Copy brfa to UART0_C4[4:0]
+			//First we clean the BaudRate fine adjust value
+			UART2->C4 &= ~UART_C4_BRFA_MASK;
+			UART2->C4 = (UART_C4_BRFA_MASK | brfa); //Copy brfa to UART0_C4[4:0]
 
-			UART2->C2 &= (UART_C2_TIE_MASK); //Enable transmission and receptor of the UART
+			UART2->C2 |= (UART_C2_TE_MASK |UART_C2_RE_MASK); //Enable transmission and receptor of the UART
 		break;
 		}
 		case UART_3:{
-			SIM->SCGC4 |= UART3_BASE; //Activate UART0 Clock gating
-			UART3->C2 &= ~(UART_C2_TIE_MASK); //Disable transmission and receptor of the UART
+			SIM->SCGC4 |= SIM_SCGC4_UART3_MASK; //Activate UART0 Clock gating
+			UART3->C2 &= (~UART_C2_TE_MASK & ~UART_C2_RE_MASK); //Disable transmission and receptor of the UART
 
-			uint16 BRFD = 0;//BRF starts with 0
-			uint16 brfa = BRFD*32;
+			uint16 brfa = (systemClk)/(baudRate);
+			uint16 SBR = (systemClk)/(16*baudRate);
 
-			//ufloat32 UART_baud_rate = (ufloat32) (systemClk/(16 * (1 + BRFD)));
-			//ufloat32 UART_baud_rate = systemClk / (16 × (SBR[12:0] + BRFD));
-			uint16 SBR = ((systemClk/baudRate)-BRFD)/16;
-
-			UART3->BDH =   (UART_BDH_SBR_MASK & ((uint16) SBR >> 8));
+			//First we clean the UART high and low baudrate values, then we assign the wanted baudRate value
+			UART3->BDH &= ~UART_BDH_SBR_MASK;
+			UART3->BDL &= ~UART_BDL_SBR_MASK;
+			UART3->BDH =   ((UART_BDH_SBR_MASK & (uint16) SBR) >> 8);
 			UART3->BDL = (UART_BDL_SBR_MASK & ((uint8) SBR));
 
-			UART3->C4 = (UART_C4_BRFA_MASK & brfa); //Copy brfa to UART0_C4[4:0]
+			//First we clean the BaudRate fine adjust value
+			UART3->C4 &= ~UART_C4_BRFA_MASK;
+			UART3->C4 = (UART_C4_BRFA_MASK | brfa); //Copy brfa to UART0_C4[4:0]
 
-			UART3->C2 &= (UART_C2_TIE_MASK); //Enable transmission and receptor of the UART
+			UART3->C2 |= (UART_C2_TE_MASK |UART_C2_RE_MASK); //Enable transmission and receptor of the UART
 		break;
 		}
 		case UART_4:{
-			SIM->SCGC4 |= UART4_BASE; //Activate UART0 Clock gating
-			UART4->C2 &= ~(UART_C2_TIE_MASK); //Disable transmission and receptor of the UART
+			SIM->SCGC1 |= SIM_SCGC1_UART4_MASK; //Activate UART0 Clock gating
+			UART4->C2 &= (~UART_C2_TE_MASK & ~UART_C2_RE_MASK); //Disable transmission and receptor of the UART
 
-			uint16 BRFD = 0;//BRF starts with 0
-			uint16 brfa = BRFD*32;
+			uint16 brfa = (systemClk)/(baudRate);
+			uint16 SBR = (systemClk)/(16*baudRate);
 
-			//ufloat32 UART_baud_rate = (ufloat32) (systemClk/(16 * (1 + BRFD)));
-			//ufloat32 UART_baud_rate = systemClk / (16 × (SBR[12:0] + BRFD));
-			uint16 SBR = ((systemClk/baudRate)-BRFD)/16;
-
-			UART4->BDH =   (UART_BDH_SBR_MASK & ((uint16) SBR >> 8));
+			//First we clean the UART high and low baudrate values, then we assign the wanted baudRate value
+			UART4->BDH &= ~UART_BDH_SBR_MASK;
+			UART4->BDL &= ~UART_BDL_SBR_MASK;
+			UART4->BDH =   ((UART_BDH_SBR_MASK & (uint16) SBR) >> 8);
 			UART4->BDL = (UART_BDL_SBR_MASK & ((uint8) SBR));
 
-			UART4->C4 = (UART_C4_BRFA_MASK & brfa); //Copy brfa to UART0_C4[4:0]
+			//First we clean the BaudRate fine adjust value
+			UART4->C4 &= ~UART_C4_BRFA_MASK;
+			UART4->C4 = (UART_C4_BRFA_MASK | brfa); //Copy brfa to UART0_C4[4:0]
 
-			UART4->C2 &= (UART_C2_TIE_MASK); //Enable transmission and receptor of the UART
+			UART4->C2 |= (UART_C2_TE_MASK |UART_C2_RE_MASK); //Enable transmission and receptor of the UART
 		break;
 		}
 		case UART_5:{
-			SIM->SCGC4 |= UART5_BASE; //Activate UART0 Clock gating
-			UART5->C2 &= ~(UART_C2_TIE_MASK); //Disable transmission and receptor of the UART
+			SIM->SCGC1 |= SIM_SCGC1_UART5_MASK; //Activate UART0 Clock gating
+			UART5->C2 &= (~UART_C2_TE_MASK & ~UART_C2_RE_MASK); //Disable transmission and receptor of the UART
 
-			uint16 BRFD = 0;//BRF starts with 0
-			uint16 brfa = BRFD*32;
+			uint16 brfa = (systemClk)/(baudRate);
+			uint16 SBR = (systemClk)/(16*baudRate);
 
-			//ufloat32 UART_baud_rate = (ufloat32) (systemClk/(16 * (1 + BRFD)));
-			//ufloat32 UART_baud_rate = systemClk / (16 × (SBR[12:0] + BRFD));
-			uint16 SBR = ((systemClk/baudRate)-BRFD)/16;
-
-			UART5->BDH =   (UART_BDH_SBR_MASK & ((uint16) SBR >> 8));
+			//First we clean the UART high and low baudrate values, then we assign the wanted baudRate value
+			UART5->BDH &= ~UART_BDH_SBR_MASK;
+			UART5->BDL &= ~UART_BDL_SBR_MASK;
+			UART5->BDH =   ((UART_BDH_SBR_MASK & (uint16) SBR) >> 8);
 			UART5->BDL = (UART_BDL_SBR_MASK & ((uint8) SBR));
 
-			UART5->C4 = (UART_C4_BRFA_MASK & brfa); //Copy brfa to UART0_C4[4:0]
+			//First we clean the BaudRate fine adjust value
+			UART5->C4 &= ~UART_C4_BRFA_MASK;
+			UART5->C4 = (UART_C4_BRFA_MASK | brfa); //Copy brfa to UART0_C4[4:0]
 
-			UART5->C2 &= (UART_C2_TIE_MASK); //Enable transmission and receptor of the UART
+			UART5->C2 |= (UART_C2_TE_MASK |UART_C2_RE_MASK); //Enable transmission and receptor of the UART
 		break;
 		}
 		default: return;
