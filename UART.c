@@ -67,64 +67,28 @@ void UART_putString(UART_ChannelType uartChannel, sint8* string)
 	switch(uartChannel)
 	{
 	case UART_0:
-		while(!(UART0->S1 & UART_S1_RDRF_MASK))
-			{
-				while(NULL != string[end_word])
-				{
-					UART0->D = string[end_word];
-					end_word++;
-				}
-			}
+		while(*string)
+			UART_putChar(UART_0, *string++);
 		break;
 	case UART_1:
-		while(!(UART1->S1 & UART_S1_RDRF_MASK))
-			{
-				while(NULL != string[end_word])
-				{
-					UART1->D = string[end_word];
-					end_word++;
-				}
-			}
+		while(*string)
+			UART_putChar(UART_1, *string++);
 		break;
 	case UART_2:
-		while(!(UART2->S1 & UART_S1_RDRF_MASK))
-			{
-				while(NULL != string[end_word])
-				{
-					UART2->D = string[end_word];
-					end_word++;
-				}
-			}
+		while(*string)
+			UART_putChar(UART_2, *string++);
 		break;
 	case UART_3:
-		while(!(UART3->S1 & UART_S1_RDRF_MASK))
-			{
-				while(NULL != string[end_word])
-				{
-					UART3->D = string[end_word];
-					end_word++;
-				}
-			}
+		while(*string)
+			UART_putChar(UART_3, *string++);
 		break;
 	case UART_4:
-		while(!(UART4->S1 & UART_S1_RDRF_MASK))
-			{
-				while(NULL != string[end_word])
-				{
-					UART4->D = string[end_word];
-					end_word++;
-				}
-			}
+		while(*string)
+			UART_putChar(UART_4, *string++);
 		break;
 	case UART_5:
-		while(!(UART5->S1 & UART_S1_RDRF_MASK))
-			{
-				while(NULL != string[end_word])
-				{
-					UART5->D = string[end_word];
-					end_word++;
-				}
-			}
+		while(*string)
+			UART_putChar(UART_5, *string++);
 		break;
 	default:
 		return;
