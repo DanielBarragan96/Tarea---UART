@@ -11,6 +11,7 @@
 #include "MK64F12.h" /* include peripheral declarations */
 #include "UART.h"/**UART device driver*/
 #include "NVIC.h"/**NVIC device driver*/
+#include "GPIO.h"
 
 #define DEBUG
 
@@ -24,10 +25,14 @@ int main(void)
 {
 	/**Enables the clock of PortB in order to configures TX and RX of UART peripheral*/
 	SIM->SCGC5 = SIM_SCGC5_PORTB_MASK;
+
+	GPIO_pinControlRegisterType pinControlRegisterUART = PORT_PCR_MUX_MASK;
 	/**Configures the pin control register of pin16 in PortB as UART RX*/
-	PORTB_PCR(16) = PORT_PCR_MUX(3);
+	GPIO_pinControlRegister(GPIO_B, BIT16, &pinControlRegisterUART);
+	//PORTB_PCR(16) = PORT_PCR_MUX(3);
 	/**Configures the pin control register of pin16 in PortB as UART TX*/
-	PORTB_PCR(17) = PORT_PCR_MUX(3);
+	GPIO_pinControlRegister(GPIO_B, BIT17, &pinControlRegisterUART);
+	//PORTB_PCR(17) = PORT_PCR_MUX(3);
 	/**Configures UART 0 to transmit/receive at 11520 bauds with a 21 MHz of clock core*/
 	UART_init (UART_0,  21000000, BD_115200);
 	printf("UART is configured");
